@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Desafio Dieta Ancestral — Área do Aluno</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    box-sizing:border-box;
+    --bone:#FAF7F1; --ink:#2A2420; --ink-soft:#5C5346;
+    --forest:#2F6B3F; --forest-deep:#234E30; --leaf:#E8F0E4; --leaf-line:#CBDDC4;
+    --ember:#C4442E; --ember-soft:#F6E4DF; --ember-line:#E9C9C0;
+    --line:#E3DACA; --card:#FFFFFF; --shadow:0 1px 2px rgba(42,36,32,.04);
+    --nav-h:60px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bone:#17140F; --ink:#F1EBE0; --ink-soft:#B9AE9C;
+      --forest:#7FBE8C; --forest-deep:#A6D6AF; --leaf:#1E2A1F; --leaf-line:#2F4632;
+      --ember:#E77A67; --ember-soft:#33201C; --ember-line:#4a2f28;
+      --line:#2C271F; --card:#1F1B15; --shadow:none;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bone:#17140F;--ink:#F1EBE0;--ink-soft:#B9AE9C;--forest:#7FBE8C;--forest-deep:#A6D6AF;
+    --leaf:#1E2A1F;--leaf-line:#2F4632;--ember:#E77A67;--ember-soft:#33201C;--ember-line:#4a2f28;
+    --line:#2C271F;--card:#1F1B15;--shadow:none;
+  }
+  *{box-sizing:inherit;margin:0;padding:0}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{
+    background:var(--bone);color:var(--ink);
+    font-family:"Instrument Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased;
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  h1,h2,h3,.serif{font-family:"Fraunces","Iowan Old Style",Georgia,serif}
+  a{color:inherit}
+
+  header.top{
+    position:sticky;top:0;z-index:50;background:#000;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    padding-top:env(safe-area-inset-top,0px);
+  }
+  .bar{max-width:920px;margin:0 auto;height:var(--nav-h);display:flex;align-items:center;
+    gap:14px;padding:0 18px}
+  .brand{display:flex;align-items:center;flex:none}
+  .brand img{height:38px;width:auto;display:block}
+  nav.tabs{margin-left:auto;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+  nav.tabs::-webkit-scrollbar{display:none}
+  .tab{border:none;background:none;color:rgba(255,255,255,.60);font:inherit;font-size:.92rem;
+    font-weight:500;padding:8px 12px;border-radius:9px;cursor:pointer;white-space:nowrap}
+  .tab:hover{color:#fff}
+  .tab.active{color:#fff;background:rgba(255,255,255,.12)}
+
+  main{max-width:760px;margin:0 auto;padding:0 20px}
+  .view{display:none;padding:42px 0 70px;animation:fade .35s ease}
+  .view.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.view{animation:none}}
+
+  .eyebrow{font-size:.85rem;font-weight:600;color:var(--ember);margin-bottom:9px}
+  h1.page{font-size:clamp(2.1rem,6vw,3rem);font-weight:600;line-height:1.05;letter-spacing:-.01em;margin-bottom:6px}
+  h2{font-size:clamp(1.4rem,4.5vw,1.9rem);font-weight:600;line-height:1.14;margin:34px 0 8px}
+  h3{font-size:1.16rem;font-weight:600;margin:28px 0 8px;font-family:"Instrument Sans",sans-serif;color:var(--forest-deep)}
+  h4{font-size:1.04rem;font-weight:600;margin:20px 0 4px;font-family:"Instrument Sans",sans-serif}
+  p{margin:0 0 14px}
+  .lede{font-size:1.13rem;color:var(--ink-soft);max-width:62ch}
+  .muted{color:var(--ink-soft)}
+  ul.bullets{margin:4px 0 14px 22px}
+  ul.bullets li{margin-bottom:6px}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;box-shadow:var(--shadow);margin:18px 0}
+  .signoff{font-family:"Fraunces",serif;font-size:1.45rem;font-weight:500;color:var(--forest-deep);margin:26px 0 0}
+
+  .flist{list-style:none;display:grid;gap:9px;margin:4px 0 0}
+  .flist li{padding-left:26px;position:relative}
+  .flist li::before{content:"";position:absolute;left:0;top:.62em;width:9px;height:9px;border-radius:50%;background:var(--forest)}
+
+  .btn{display:inline-flex;align-items:center;gap:8px;background:var(--forest);color:#fff;border:none;
+    font:inherit;font-weight:600;font-size:1rem;padding:12px 20px;border-radius:100px;cursor:pointer;text-decoration:none;margin-top:6px}
+  .btn:hover{background:var(--forest-deep)}
+
+  .steps{display:grid;gap:12px;margin-top:10px}
+  .step{display:grid;grid-template-columns:30px 1fr;gap:14px;align-items:start}
+  .step .n{font-family:"Fraunces",serif;font-weight:600;color:var(--forest);font-size:1.15rem;line-height:1.4}
+  .step p{margin:0;font-size:.98rem}
+
+  .weeks{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:8px}
+  @media(max-width:640px){.weeks{grid-template-columns:1fr}}
+  .wkcard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 18px;box-shadow:var(--shadow);cursor:pointer;text-align:left;font:inherit;color:inherit}
+  .wkcard:hover{border-color:var(--leaf-line)}
+  .wkcard .tag{display:inline-block;font-size:.78rem;font-weight:600;color:#fff;background:var(--forest);padding:3px 10px;border-radius:100px;margin-bottom:10px}
+  .wkcard.w2 .tag{background:var(--forest-deep)}
+  .wkcard.w3 .tag{background:var(--ember)}
+  .wkcard h4{font-family:"Fraunces",serif;font-size:1.12rem;font-weight:600;margin:0 0 4px}
+  .wkcard span{font-size:.9rem;color:var(--ink-soft)}
+
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+  @media(max-width:600px){.split{grid-template-columns:1fr}}
+  .panel{border-radius:16px;padding:20px 20px;border:1px solid}
+  .panel.do{background:var(--leaf);border-color:var(--leaf-line)}
+  .panel.avoid{background:var(--ember-soft);border-color:var(--ember-line)}
+  .panel h4{font-size:1rem;font-weight:600;margin:0 0 12px}
+  .panel.do h4{color:var(--forest-deep)}
+  .panel.avoid h4{color:var(--ember)}
+  .panel ul{list-style:none;display:grid;gap:8px}
+  .panel li{font-size:.95rem;padding-left:22px;position:relative}
+  .panel.do li::before{content:"✓";position:absolute;left:0;color:var(--forest);font-weight:700}
+  .panel.avoid li::before{content:"✕";position:absolute;left:0;color:var(--ember);font-weight:700}
+
+  .note{padding:16px 18px;border-left:3px solid var(--forest);background:var(--card);border-radius:0 12px 12px 0;margin:16px 0}
+  .note.ember{border-left-color:var(--ember)}
+  .note strong{color:var(--forest-deep)}
+  .note.ember strong{color:var(--ember)}
+  .note p{margin:0}
+
+  .aula{display:flex;gap:10px;align-items:baseline;font-size:.93rem;color:var(--ink-soft);
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:6px 0 10px}
+  .aula b{color:var(--forest-deep);font-weight:600;white-space:nowrap}
+
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+  .chip{font-size:.85rem;padding:5px 12px;border-radius:100px;background:var(--leaf);color:var(--forest-deep);border:1px solid var(--leaf-line)}
+
+  .expect{list-style:none;display:grid;gap:14px;margin-top:8px}
+  .expect li{padding-left:20px;position:relative;font-size:.99rem}
+  .expect li::before{content:"";position:absolute;left:0;top:.6em;width:8px;height:8px;border-radius:50%;background:var(--ember)}
+
+  .wk-quote{font-family:"Fraunces",serif;font-style:italic;font-size:1.15rem;color:var(--forest-deep);margin:24px 0 0}
+  .view.wk3 .wk-quote{color:var(--ember)}
+
+  .check-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
+  .count{font-size:.9rem;font-weight:600;color:var(--forest-deep)}
+  .checks{list-style:none;display:grid;gap:2px;margin-top:10px}
+  .checks label{display:flex;gap:12px;align-items:flex-start;padding:10px 8px;border-radius:10px;cursor:pointer;font-size:.97rem}
+  .checks label:hover{background:var(--leaf)}
+  .checks input{appearance:none;-webkit-appearance:none;width:22px;height:22px;flex:none;margin-top:1px;
+    border:2px solid var(--leaf-line);border-radius:7px;cursor:pointer;position:relative;background:var(--card)}
+  .checks input:checked{background:var(--forest);border-color:var(--forest)}
+  .checks input:checked::after{content:"✓";position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:.85rem;font-weight:700}
+  .checks input:checked + span{color:var(--ink-soft);text-decoration:line-through}
+  .reset{background:none;border:none;color:var(--ember);font:inherit;font-size:.85rem;cursor:pointer;padding:4px 0;margin-top:8px}
+
+  .calc{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin:8px 0 14px}
+  .calc label{font-size:.9rem;font-weight:600;display:block;margin-bottom:6px}
+  .calc input{font:inherit;font-size:1.05rem;width:120px;padding:10px 12px;border:1px solid var(--line);
+    border-radius:10px;background:var(--card);color:var(--ink)}
+  .calc-out{font-family:"Fraunces",serif;font-size:1.3rem;font-weight:600;color:var(--forest-deep)}
+  .calc-out small{display:block;font-family:"Instrument Sans",sans-serif;font-size:.82rem;font-weight:400;color:var(--ink-soft)}
+
+  .rtable{width:100%;border-collapse:collapse;font-size:.94rem;margin:10px 0}
+  .rtable th,.rtable td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+  .rtable th{font-size:.82rem;color:var(--ink-soft);font-weight:600}
+  .rtable td:first-child{font-weight:600;white-space:nowrap;padding-right:14px}
+  .water td:last-child{text-align:right;color:var(--forest-deep);font-weight:600}
+
+  .glist{list-style:none;display:grid;gap:6px;margin:6px 0}
+  .glist li{padding-left:20px;position:relative;font-size:.96rem}
+  .glist.ok li::before{content:"✓";position:absolute;left:0;color:var(--forest);font-weight:700}
+  .glist.no li::before{content:"✕";position:absolute;left:0;color:var(--ember);font-weight:700}
+
+  .built{list-style:none;display:grid;gap:8px;margin:6px 0 18px}
+  .built li{padding-left:26px;position:relative}
+  .built li::before{content:"✓";position:absolute;left:0;color:var(--forest);font-weight:700}
+
+  .foot-nav{display:flex;justify-content:space-between;gap:12px;margin-top:34px;padding-top:22px;border-top:1px solid var(--line)}
+  .foot-nav button{background:none;border:none;color:var(--forest-deep);font:inherit;font-weight:600;cursor:pointer;font-size:.95rem}
+  footer{text-align:center;color:var(--ink-soft);font-size:.82rem;padding:24px 0 40px;border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="bar">
+    <a class="brand" href="#" data-target="inicio" aria-label="Desafio Dieta Ancestral - Dr. Marlon Batista"><img src="data:image/png;base64,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" alt="Desafio Dieta Ancestral - Dr. Marlon Batista"></a>
+    <nav class="tabs" id="tabs">
+      <button class="tab active" data-target="inicio">Início</button>
+      <button class="tab" data-target="base">A Base</button>
+      <button class="tab" data-target="s1">Semana 1</button>
+      <button class="tab" data-target="s2">Semana 2</button>
+      <button class="tab" data-target="s3">Semana 3</button>
+      <button class="tab" data-target="guia">Guia de Apoio</button>
+      <button class="tab" data-target="depois">Depois</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============ INÍCIO ============ -->
+  <section class="view active" id="inicio">
+    <p class="eyebrow">Bem-vindo ao Desafio</p>
+    <h1 class="page">Seu Desafio de 21 dias começa aqui</h1>
+    <p class="lede">Esse desafio foi criado para pessoas que querem, em 21 dias, dar um passo na direção de um corpo mais leve, com menos inflamação, menos fome, mais controle e mais clareza sobre o que realmente funciona no emagrecimento.</p>
+    <p style="margin-top:16px">Aqui você não vai encontrar o caminho tradicional de “comer de 3 em 3 horas”, viver contando calorias, beliscando o dia inteiro ou tentando compensar com cardio. Isso não resolve a causa. No máximo, mascara o problema por pouco tempo.</p>
+
+    <div class="card">
+      <h3 style="margin-top:0">O foco da Dieta Ancestral é simples:</h3>
+      <ul class="flist">
+        <li>reduzir estímulos que aumentam fome e inflamação</li>
+        <li>organizar a alimentação para melhorar saciedade e resposta metabólica</li>
+        <li>usar o jejum como ferramenta, quando fizer sentido</li>
+        <li>melhorar intestino, sono e comportamento alimentar</li>
+        <li>dar previsibilidade para você enxergar resultado e manter</li>
+      </ul>
+    </div>
+
+    <h2>Para quem este desafio foi criado</h2>
+    <p>Este desafio é para você que:</p>
+    <ul class="bullets">
+      <li>quer emagrecer com estratégia e simplicidade</li>
+      <li>está cansado de começar e parar</li>
+      <li>vive com fome, desejo por doce ou beliscos</li>
+      <li>sente que seu corpo está inflamado, retido, pesado</li>
+      <li>quer entender o básico que ninguém explica com clareza</li>
+    </ul>
+
+    <h2>Como funciona o Desafio</h2>
+    <p>A cada semana você recebe uma vídeo-aula e um foco novo. O que você faz todos os dias é sempre o mesmo (a base). O que avança é a intensidade, semana após semana.</p>
+    <p>Esse desafio foi feito para ser executável. Não é sobre perfeição. É sobre direção. Se você fizer o básico bem feito por 21 dias, você vai entender porque muita coisa que você acreditava sobre emagrecimento estava te deixando doente, com fome e preso no mesmo ciclo.</p>
+    <h3>Como usar este material como um guia prático:</h3>
+    <div class="steps">
+      <div class="step"><span class="n">1</span><p>Leia o capítulo de regras e entenda o que será prioridade nos 21 dias.</p></div>
+      <div class="step"><span class="n">2</span><p>Siga a alimentação base e escolha opções simples para o seu dia.</p></div>
+      <div class="step"><span class="n">3</span><p>Aplique o jejum do jeito certo, sem exageros e sem ansiedade.</p></div>
+      <div class="step"><span class="n">4</span><p>Use as partes de hidratação, sono, intestino e desejo por doce como “suporte” para não desistir.</p></div>
+      <div class="step"><span class="n">5</span><p>Se surgir dúvida, volte ao capítulo correspondente antes de tomar qualquer decisão por conta própria.</p></div>
+    </div>
+    <p style="margin-top:16px">A partir daqui, você não está apenas buscando emagrecer. Está buscando mais autonomia, mais clareza e mais saúde.</p>
+
+    <h2>As três semanas</h2>
+    <div class="weeks">
+      <button class="wkcard w1" data-target="s1"><span class="tag">Semana 1</span><h4>A Retirada</h4><span>Dias 1 a 7 — sair do padrão que engorda</span></button>
+      <button class="wkcard w2" data-target="s2"><span class="tag">Semana 2</span><h4>A Reorganização</h4><span>Dias 8 a 14 — intestino, sono e jejum</span></button>
+      <button class="wkcard w3" data-target="s3"><span class="tag">Semana 3</span><h4>A Consolidação</h4><span>Dias 15 a 21 — manter e reconhecer os sinais</span></button>
+    </div>
+
+    <div class="card" id="checklist">
+      <div class="check-head">
+        <h3 style="margin:0">Checklist de hoje</h3>
+        <span class="count" id="checkCount">0 de 12</span>
+      </div>
+      <p class="muted" style="font-size:.9rem;margin:6px 0 0">Estes hábitos valem todos os dias. Marque o que cumpriu — reinicia sozinho amanhã.</p>
+      <p style="font-size:.8rem;font-weight:600;color:var(--forest-deep);margin:14px 0 0">Fazer hoje</p>
+      <ul class="checks" id="doList">
+        <li><label><input type="checkbox"><span>Priorizei comida de verdade nas refeições</span></label></li>
+        <li><label><input type="checkbox"><span>Comi proteína suficiente para ter saciedade</span></label></li>
+        <li><label><input type="checkbox"><span>Usei gordura natural como fonte de energia</span></label></li>
+        <li><label><input type="checkbox"><span>Bebi minha meta de água do dia</span></label></li>
+        <li><label><input type="checkbox"><span>Dormi o melhor possível</span></label></li>
+        <li><label><input type="checkbox"><span>Fiz o jejum noturno / não comi tarde</span></label></li>
+      </ul>
+      <p style="font-size:.8rem;font-weight:600;color:var(--ember);margin:14px 0 0">Evitei hoje</p>
+      <ul class="checks" id="avoidList">
+        <li><label><input type="checkbox"><span>Açúcar em qualquer forma</span></label></li>
+        <li><label><input type="checkbox"><span>Farinhas e produtos refinados</span></label></li>
+        <li><label><input type="checkbox"><span>Ultraprocessados</span></label></li>
+        <li><label><input type="checkbox"><span>Refrigerantes, inclusive os “zero”</span></label></li>
+        <li><label><input type="checkbox"><span>Beliscos fora das refeições</span></label></li>
+        <li><label><input type="checkbox"><span>Comer por ansiedade ou hábito</span></label></li>
+      </ul>
+      <button class="reset" id="resetChecks">Limpar marcações de hoje</button>
+    </div>
+
+    <a class="btn" data-target="s1" href="#">Começar pela Semana 1</a>
+    <p class="signoff">Vamos viver mais e melhor?</p>
+  </section>
+
+  <!-- ============ A BASE ============ -->
+  <section class="view" id="base">
+    <p class="eyebrow">A base de todos os dias</p>
+    <h1 class="page">Regras simples do Desafio</h1>
+    <p class="lede">Estas regras valem para todos os dias. Aqui, menos é mais. Simplicidade gera constância.</p>
+
+    <div class="split">
+      <div class="panel do">
+        <h4>O que fazer todos os dias</h4>
+        <ul>
+          <li>Priorizar comida de verdade em todas as refeições</li>
+          <li>Comer proteína suficiente para gerar saciedade</li>
+          <li>Usar gordura natural como fonte de energia</li>
+          <li>Beber água diariamente ao longo do dia</li>
+          <li>Dormir o melhor possível, dentro da sua realidade</li>
+          <li>Seguir as orientações do desafio sem improvisar</li>
+        </ul>
+      </div>
+      <div class="panel avoid">
+        <h4>O que evitar durante os 21 dias</h4>
+        <ul>
+          <li>Açúcar em qualquer forma</li>
+          <li>Farinhas e produtos refinados</li>
+          <li>Ultraprocessados</li>
+          <li>Refrigerantes, inclusive os “zero”</li>
+          <li>Beliscos fora das refeições</li>
+          <li>Comer por ansiedade ou hábito</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>O que não é permitido ajustar por conta própria</h3>
+    <ul class="bullets">
+      <li>Não adicionar alimentos “porque acha que pode”</li>
+      <li>Não inventar versões alternativas da alimentação</li>
+      <li>Não forçar jejum se não estiver se sentindo bem</li>
+      <li>Não compensar erros com restrição exagerada</li>
+      <li>Não comparar seu resultado com o de outras pessoas</li>
+    </ul>
+    <p>Cada corpo responde de um jeito. O foco é consistência, não comparação.</p>
+
+    <div class="note">
+      <p><strong>Uma regra que vale ouro:</strong> se surgir dúvida, não mude nada antes de consultar o material do desafio ou tirar a dúvida no grupo. A maior parte das pessoas não falha por falta de esforço. Falha por excesso de ajustes, ansiedade e improviso. Siga o plano. Confie no processo. Os ajustes vêm depois.</p>
+    </div>
+    <p class="wk-quote">“Esses 21 dias não são sobre exceção. São sobre processo.”</p>
+
+    <div class="foot-nav"><button data-target="inicio">← Início</button><button data-target="s1">Semana 1 →</button></div>
+  </section>
+
+  <!-- ============ SEMANA 1 ============ -->
+  <section class="view wk1" id="s1">
+    <p class="eyebrow">Semana 1 · Dias 1 a 7</p>
+    <h1 class="page">A Retirada</h1>
+    <p class="lede">Sair do padrão que engorda. Comece entendendo as regras e montando o prato do jeito certo, com proteína suficiente e gordura natural como fonte de energia.</p>
+    <div class="aula"><b>Vídeo-aula (Eduzz):</b><span>Regras do desafio + alimentação base.</span></div>
+
+    <h3>O que avança esta semana</h3>
+    <h4 style="margin-top:8px">Jejum noturno — comece com 12 horas</h4>
+    <p>Neste desafio, trabalhamos com jejuns seguros e progressivos: 12 horas (início), 14 horas e 16 horas (quando o corpo já estiver adaptado). Não é obrigatório começar com 16h. Cada pessoa respeita seu ritmo.</p>
+    <p>O foco do desafio é parar de comer à noite. Não fomos feitos para jantar tarde, beliscar à noite ou comer por ansiedade ou hábito. Dormir em jejum melhora emagrecimento, sono, inflamação e produção hormonal.</p>
+    <div class="chips"><span class="chip">12h para iniciar</span><span class="chip">jejum noturno primeiro</span><span class="chip">no seu ritmo</span></div>
+
+    <h2>Leituras desta semana</h2>
+
+    <h3>Alimentação base do desafio</h3>
+    <p>A alimentação é o pilar central da Dieta Ancestral. Sem organizar o que você come, não existe jejum que funcione, não existe intestino saudável e não existe emagrecimento sustentável. O foco não é contar calorias nem comer pouco. O foco é qualidade alimentar, saciedade, redução de inflamação e reorganização metabólica.</p>
+    <h4>Os três princípios da alimentação</h4>
+    <ul class="bullets">
+      <li>Proteína suficiente em todas as refeições.</li>
+      <li>Gordura natural como fonte de energia.</li>
+      <li>Retirada progressiva de alimentos que estimulam fome e ganho de peso.</li>
+    </ul>
+    <p>Esse modelo permite: menos fome ao longo do dia, menos beliscos, menos vontade por doce, menos retenção de líquido e mais controle alimentar.</p>
+
+    <h4>O papel da proteína</h4>
+    <p>A proteína é a base da alimentação neste desafio. Ela é responsável por aumentar a saciedade, reduzir a fome entre as refeições, preservar massa muscular e diminuir a compulsão por carboidratos. Toda refeição deve começar pensando na proteína. Quando a proteína é insuficiente, o corpo busca energia rápida, geralmente em açúcar, farinha ou beliscos.</p>
+
+    <h4>O papel da gordura natural</h4>
+    <p>A gordura não é vilã. Ela é combustível, participa da produção hormonal e ajuda no controle do apetite. As fontes priorizadas no desafio são: abacate, óleo de coco, manteiga ghee, azeite de oliva extra virgem (usar frio, não aquecer), banha de porco e gordura natural da carne. Essas gorduras aumentam saciedade, reduzem picos de insulina e ajudam na adaptação metabólica. O uso é com bom senso, sem medo e sem exagero.</p>
+
+    <h4>Por que reduzir carboidratos neste período</h4>
+    <p>Carboidratos refinados e alimentos ricos em amido estimulam picos de insulina, fome precoce, retenção de líquido e inflamação. Durante o desafio, a redução desses alimentos ajuda o corpo a acessar gordura como fonte de energia, reduzir dependência de açúcar e melhorar foco e clareza mental. Isso não é exclusão definitiva. É estratégia temporária para reorganizar o metabolismo.</p>
+
+    <h4>Movimentos de retirada: como sair do padrão que engorda</h4>
+    <p>O desafio não é sobre radicalismo. É sobre movimentos conscientes de retirada. Alimentos como pão (normal e integral), tapioca, arroz, feijão, massas, doces, bebidas alcoólicas e cuscuz não precisam ser cortados para sempre, mas precisam ser retirados neste momento para que o corpo responda. A ideia é retirar o que sabidamente engorda e inflama, reduzir deslizes de fim de semana e diminuir gradualmente a dependência desses alimentos. Quanto mais organizado for esse processo, menor a chance de compulsão e abandono.</p>
+
+    <h4>Como preparar os alimentos: atenção às frituras</h4>
+    <p>Não adianta escolher bons alimentos e errar na forma de preparo. Para fritar ou refogar, priorize manteiga ghee, banha de porco e óleo de coco — são mais estáveis ao calor e sofrem menos oxidação quando aquecidas. Evite fritar ou refogar em óleo de soja, óleo de girassol, óleo de milho e margarina, que oxidam facilmente e geram compostos inflamatórios. O azeite de oliva extra virgem deve ser usado preferencialmente frio, para finalizar saladas ou pratos prontos.</p>
+
+    <h4>Um ponto essencial</h4>
+    <p>Você não precisa comer pouco. Você precisa comer do jeito certo. Quando a alimentação está bem estruturada, o corpo responde sem sofrimento. Essa base será o suporte para o jejum, para a melhora intestinal e para a redução do desejo por doces.</p>
+
+    <h3>Jejum intermitente (o básico)</h3>
+    <p>O jejum intermitente não é moda. É uma ferramenta metabólica, hormonal e anti-inflamatória. Jejum é ficar um período sem comer, permitindo que o corpo use energia estocada. Não é passar fome. É organizar horários. Você já jejua todos os dias — a diferença aqui é fazer isso de forma estratégica.</p>
+    <p><strong>O que PODE durante o jejum:</strong> água, café sem açúcar, chá sem açúcar e água com gás. Não usar: açúcar, adoçantes artificiais e bebidas calóricas.</p>
+    <p><strong>Como quebrar o jejum da forma certa:</strong> priorize proteína, gordura boa e comida de verdade. Evite quebrar com pão, tapioca, frutas, açúcar e alimentos ultraprocessados.</p>
+    <div class="note ember"><p><strong>Quem deve ter cuidado com o jejum</strong> (não indicado sem acompanhamento): gestantes, crianças, pessoas com histórico de transtornos alimentares e diabéticos em uso de insulina.</p></div>
+
+    <h2>O que esperar</h2>
+    <ul class="expect">
+      <li><strong>Abstinência de açúcar (dias 3 a 7).</strong> Nos primeiros dias, é comum sentir dor de cabeça, irritação, cansaço e desejo intenso por doce. Isso é abstinência de açúcar, e ela passa. Normalmente entre 3 e 7 dias o desejo diminui muito.</li>
+      <li><strong>Variações de peso no início.</strong> Nos primeiros dias, o peso pode cair rápido, oscilar ou estabilizar temporariamente. Isso é normal. Parte do peso inicial perdido é retenção, glicogênio e inflamação. O mais importante é observar o conjunto de sinais, não apenas a balança.</li>
+      <li><strong>Muito viciado em doce?</strong> Para quem tem vício intenso, algumas substituições podem ajudar no início, sem alimentar o ciclo do açúcar: brigadeiro de biomassa, mousse feito com xilitol e chocolate 70% cacau (em pequenas quantidades). Essas opções reduzem o impacto glicêmico, ajudam na transição e evitam recaídas no início. Importante: são pontes, não base da alimentação. O objetivo é não precisar mais do doce.</li>
+    </ul>
+    <p class="wk-quote">“Esses 21 dias não são sobre exceção. São sobre processo.”</p>
+
+    <div class="foot-nav"><button data-target="base">← A Base</button><button data-target="s2">Semana 2 →</button></div>
+  </section>
+
+  <!-- ============ SEMANA 2 ============ -->
+  <section class="view wk2" id="s2">
+    <p class="eyebrow">Semana 2 · Dias 8 a 14</p>
+    <h1 class="page">A Reorganização</h1>
+    <p class="lede">Intestino, sono e jejum. Com a alimentação já no lugar, entra o que potencializa tudo: o jejum como aliado, o intestino como órgão metabólico e o sono como parte do tratamento.</p>
+    <div class="aula"><b>Vídeo-aula (Eduzz):</b><span>Jejum, intestino e sono.</span></div>
+
+    <h3>O que avança esta semana</h3>
+    <h4 style="margin-top:8px">Jejum de 14 horas</h4>
+    <p>Com o corpo já mais adaptado, o jejum pode subir para 14 horas. Cada pessoa respeita seu ritmo. Jejum noturno e sono caminham juntos.</p>
+    <p><strong>Meta de sono:</strong> 7 a 8 horas de sono por noite. Não precisa ser perfeito todos os dias. Precisa ser frequente.</p>
+    <p><strong>Hidratação:</strong> 40 a 50 ml de água por kg de peso corporal, por dia, distribuídos ao longo do dia.</p>
+    <div class="chips"><span class="chip">12h → 14h</span><span class="chip">dormir 7 a 8h</span><span class="chip">40–50 ml de água por kg</span></div>
+
+    <h2>Leituras desta semana</h2>
+
+    <h3>Saúde intestinal</h3>
+    <p>Você pode comer pouco, fazer jejum e treinar e ainda assim não emagrecer, se o intestino estiver inflamado. O intestino é um órgão metabólico. Ele regula inflamação, fome, absorção de nutrientes, produção hormonal e imunidade. Intestino doente = metabolismo travado. Cuidar do intestino não é opcional.</p>
+    <p><strong>Sinais de que o intestino não está bem:</strong> estufamento, gases excessivos, constipação, diarreia, azia, refluxo, barriga inchada ao final do dia e dificuldade de emagrecer.</p>
+    <p><strong>Intestino inflamado engorda:</strong> aumenta a resistência insulínica, piora a absorção de nutrientes, aumenta a inflamação sistêmica e desregula os hormônios da fome. O corpo entra em modo defesa, não em modo emagrecimento.</p>
+    <p><strong>Alimentos que inflamam o intestino</strong> (movimentos de retirada): açúcar, farinha, ultraprocessados, óleos vegetais (soja, milho, girassol) e excesso de adoçantes artificiais. Eles alteram a microbiota, aumentam a permeabilidade intestinal e pioram a inflamação.</p>
+    <p><strong>Alimentos que ajudam a recuperar o intestino:</strong> carne, ovos, peixes, gorduras boas e comida simples e de fácil digestão. Quanto mais simples a alimentação, menor agressão ao intestino.</p>
+    <p><strong>Intestino e desejo por doces:</strong> um intestino desequilibrado aumenta a vontade por açúcar, piora a compulsão e gera ciclos de recaída. Tratar o intestino diminui o desejo por doce — isso não é força de vontade, é fisiologia.</p>
+    <p><strong>Hidratação e intestino:</strong> água é parte do tratamento. Melhora o trânsito intestinal, reduz constipação e ajuda na desintoxicação. No desafio, hidratação é regra, não detalhe.</p>
+
+    <h3>Higiene do sono</h3>
+    <p>Dormir mal não dá só cansaço. Dá fome, inflamação e dificuldade de emagrecer. Quem dorme pouco ou mal sente mais fome no dia seguinte, tem mais vontade por doce, acumula mais gordura e emagrece menos, mesmo fazendo dieta. Sono ruim trava o metabolismo.</p>
+    <p><strong>Sono e hormônios do emagrecimento:</strong> durante o sono adequado, o corpo regula leptina (saciedade), grelina (fome), cortisol (estresse e gordura abdominal) e GH (recuperação e preservação muscular). Dormir mal desorganiza tudo isso.</p>
+    <p><strong>Comer tarde atrapalha o sono e o emagrecimento:</strong> comer à noite piora o sono, aumenta refluxo, eleva insulina e reduz queima de gordura. Dormir em jejum melhora o descanso e o resultado. Por isso, jejum noturno e sono caminham juntos.</p>
+    <p><strong>Luz, telas e sono:</strong> o excesso de telas à noite reduz melatonina, dificulta pegar no sono e piora a qualidade do descanso. Idealmente, reduzir telas 1 hora antes de dormir, usar luz mais baixa à noite e deixar o quarto escuro e silencioso.</p>
+    <p><strong>Café, estimulantes e sono:</strong> evite café após o meio da tarde, energéticos e pré-treinos à noite. Mesmo que você “ache” que não atrapalha, o corpo sente.</p>
+    <p><strong>Estratégias práticas de higiene do sono:</strong> tente dormir e acordar em horários parecidos, evite refeições pesadas à noite, deixe o quarto escuro e silencioso e crie um ritual noturno (banho, leitura, silêncio). Dormir bem não é preguiça. É estratégia de saúde.</p>
+
+    <h3>Vício em doces: não é fraqueza, é bioquímica</h3>
+    <p>Se você sente vontade incontrolável por doce, ansiedade ao cortar açúcar ou sensação de “preciso de algo doce depois da refeição”, isso não é falta de força de vontade. É um ciclo bioquímico. O açúcar ativa dopamina no cérebro, gerando prazer rápido, queda brusca de energia depois e necessidade de repetir.</p>
+    <p><strong>Açúcar e insulina — o ciclo que mantém o vício:</strong> quanto mais açúcar, maior o pico de insulina, maior a queda depois, maior a fome e maior a compulsão. Esse ciclo trava o emagrecimento e alimenta o vício.</p>
+    <p><strong>O papel da alimentação certa no controle do doce:</strong> quando você consome proteína suficiente, gordura boa e menos carboidrato refinado, o cérebro recebe saciedade real e o desejo por doce cai naturalmente. Não é lutar contra o doce. É não sentir vontade.</p>
+
+    <h2>O que esperar</h2>
+    <ul class="expect">
+      <li><strong>Redução da fome ao longo do dia:</strong> menos fome, mais saciedade e menos vontade de beliscar. Isso indica melhora da resistência insulínica e melhor controle hormonal da fome. Comer menos passa a ser natural, não forçado.</li>
+      <li><strong>Diminuição da vontade por doces:</strong> menos desejo por açúcar, menos compulsão e maior controle emocional com a comida — sinal de melhora metabólica, equilíbrio do intestino e redução da inflamação.</li>
+      <li><strong>Melhora do sono e do despertar:</strong> pegar no sono mais rápido, dormir melhor e acordar com mais disposição. Mostra que o corpo está regulando hormônios, reduzindo cortisol e saindo do estado inflamatório.</li>
+      <li><strong>Mudanças no funcionamento intestinal:</strong> menos estufamento, menos gases, melhora da constipação ou diarreia e sensação de barriga menos inchada.</li>
+    </ul>
+    <p class="wk-quote">“Intestino doente = metabolismo travado. Cuidar dele não é opcional.”</p>
+
+    <div class="foot-nav"><button data-target="s1">← Semana 1</button><button data-target="s3">Semana 3 →</button></div>
+  </section>
+
+  <!-- ============ SEMANA 3 ============ -->
+  <section class="view wk3" id="s3">
+    <p class="eyebrow">Semana 3 · Dias 15 a 21</p>
+    <h1 class="page">A Consolidação</h1>
+    <p class="lede">Manter e reconhecer os sinais. A reta final é sobre constância: evitar os erros que sabotam o processo, reconhecer os sinais de que o corpo está mudando e preparar a vida depois do desafio.</p>
+    <div class="aula"><b>Vídeo-aula (Eduzz):</b><span>Erros comuns, sinais de mudança e o depois.</span></div>
+
+    <h3>O que avança esta semana</h3>
+    <h4 style="margin-top:8px">Jejum de 16 horas (quando o corpo já estiver adaptado)</h4>
+    <p>É o último degrau da progressão (12h → 14h → 16h), sempre no seu ritmo.</p>
+    <p>Consolide a rotina que já funciona para você. Organização é mais importante que variedade: você pode repetir refeições, escolher as receitas que mais gosta e adaptar à sua rotina. Quanto menos decisões você precisa tomar, menor a chance de deslizar e maior a constância. E lembre: não existe “dia do lixo”.</p>
+    <div class="chips"><span class="chip">14h → 16h</span><span class="chip">rotina consolidada</span><span class="chip">sem “dia do lixo”</span></div>
+
+    <h2>Leituras desta semana</h2>
+
+    <h3>Erros comuns que atrapalham o resultado</h3>
+    <p>O maior risco não é errar a alimentação pontualmente. É repetir comportamentos que sabotam o processo sem perceber.</p>
+    <h4>Beliscos fora de hora</h4>
+    <p>Beliscar o tempo todo mantém a insulina elevada, atrapalha a queima de gordura e impede o corpo de entrar em modo de emagrecimento. Se não há fome real, não coma. Comer deve ser uma decisão consciente, não automática.</p>
+    <h4>Comer por hábito, não por fome</h4>
+    <p>Muita gente come porque “deu o horário”, por ansiedade, por tédio ou por costume. No desafio, aprendemos a diferenciar fome real de vontade emocional.</p>
+    <h4>Exageros no fim de semana</h4>
+    <p>O pensamento “é só um pouco” costuma virar muito açúcar, muita farinha e muito álcool. Não existe “dia do lixo”. Existe compromisso com o processo. Dois dias ruins podem anular cinco dias bons.</p>
+    <h4>Expectativas irreais</h4>
+    <p>Querer perder tudo em poucos dias e comparar seu resultado com o de outras pessoas. O desafio é sobre melhora metabólica, redução de inflamação e início de uma nova fase. Resultado sólido vem com constância.</p>
+    <h4>Comparação com outras pessoas</h4>
+    <p>Comparar peso, velocidade de emagrecimento e aparência só gera ansiedade e desistência. Seu corpo tem história, inflamação e metabolismo próprios. Compare-se apenas com quem você era antes de começar.</p>
+    <h4>Querer ajustar tudo por conta própria</h4>
+    <p>Mudar horários, alimentos e estratégias sem orientação pode atrasar resultados, gerar sintomas desnecessários e confundir o processo. Siga o plano, confie no método e evite ajustes impulsivos.</p>
+    <h4>Desistir por pequenos deslizes</h4>
+    <p>Errar uma refeição não estraga tudo. Desistir, sim. Volte para o plano na refeição seguinte. Constância é mais importante que perfeição.</p>
+
+    <h3>Sinais de que o corpo está mudando</h3>
+    <p>Nem toda mudança aparece primeiro na balança. Muitos sinais mostram que o processo está funcionando, mesmo antes de grandes quedas de peso. Aprender a reconhecê-los evita ansiedade e desistência precoce.</p>
+
+    <h2>O que esperar</h2>
+    <ul class="expect">
+      <li><strong>Mais energia e clareza mental:</strong> mais energia ao longo do dia, menos cansaço, mais foco e clareza mental. Isso acontece quando o corpo aprende a usar gordura como fonte de energia.</li>
+      <li><strong>Mudanças corporais antes da balança:</strong> mesmo sem grande queda de peso, você pode notar roupas mais folgadas, redução de inchaço, menos retenção e melhor aparência corporal.</li>
+      <li><strong>Confiança no processo:</strong> quando o corpo começa a responder, surge mais motivação, mais confiança e menos ansiedade. Esses sinais mostram que você está no caminho certo.</li>
+    </ul>
+    <p class="wk-quote">“Errar uma refeição não estraga tudo. Desistir, sim.”</p>
+
+    <div class="foot-nav"><button data-target="s2">← Semana 2</button><button data-target="guia">Guia de Apoio →</button></div>
+  </section>
+
+  <!-- ============ GUIA DE APOIO ============ -->
+  <section class="view" id="guia">
+    <p class="eyebrow">Guia de apoio · consulte sempre (vale os 21 dias)</p>
+    <h1 class="page">Suas ferramentas do dia a dia</h1>
+    <p class="lede">Estas páginas valem para os 21 dias inteiros. Use como consulta rápida.</p>
+
+    <div class="split">
+      <div class="card" style="margin:0">
+        <h4 style="margin:0 0 10px">Alimentos permitidos</h4>
+        <ul class="glist ok">
+          <li>Carnes em geral</li><li>Ovos</li><li>Peixes</li><li>Frango</li>
+          <li>Verduras e legumes</li><li>Gorduras naturais</li><li>Temperos naturais</li>
+        </ul>
+      </div>
+      <div class="card" style="margin:0">
+        <h4 style="margin:0 0 10px">Alimentos a evitar</h4>
+        <ul class="glist no">
+          <li>Açúcar</li><li>Farinhas</li><li>Pães, massas, bolos</li><li>Doces</li>
+          <li>Refrigerantes</li><li>Ultraprocessados</li><li>Óleos vegetais refinados</li>
+        </ul>
+      </div>
+    </div>
+    <p class="muted">Esses alimentos dificultam o controle do apetite e atrasam os resultados.</p>
+
+    <h2>Sugestões de refeições</h2>
+    <h3>Café da manhã</h3>
+    <p>No desafio, o café da manhã não é obrigatório. Se estiver em jejum, continue em jejum. Quando optar por comer, priorize ovos, carnes, proteína animal e gorduras boas. Sugestões: ovos mexidos com manteiga ghee; ovos com carne moída; omelete simples; sobras do almoço do dia anterior. Pão, tapioca, cuscuz, bolo e frutas não fazem parte do café da manhã neste desafio.</p>
+    <h3>Almoço (a principal refeição do dia)</h3>
+    <p>Base do prato: proteína animal, gordura boa e legumes (se desejar). Sugestões: carne bovina, frango ou peixe; ovos; legumes simples; gordura da própria carne, azeite ou manteiga ghee. Evite: arroz, feijão, macarrão, farinha e farofa.</p>
+    <h3>Jantar (mais simples, mais leve, mais cedo)</h3>
+    <p>Sugestões: ovos; carne; sopa de carne; proteína com legumes. Evitar comer tarde melhora o sono e facilita o emagrecimento.</p>
+    <h3>Opções simples para quem trabalha fora</h3>
+    <ul class="bullets">
+      <li>marmita simples com carne e ovos</li>
+      <li>churrasco simples (sem acompanhamentos)</li>
+      <li>restaurantes: pedir carne, frango ou peixe e salada</li>
+      <li>ovos cozidos</li>
+      <li>carnes prontas</li>
+    </ul>
+    <p>Evite: self-service com excesso de farinha, molhos prontos e alimentos empanados.</p>
+    <h3>Lanches (somente se houver fome)</h3>
+    <p>Na Dieta Ancestral não é obrigatório lanchar, não é comer de 3 em 3 horas, e lanche só existe se houver fome real. Para quem sente muita fome, algumas opções podem ajudar no início: frutas (com moderação), castanhas, ovo cozido, panqueca de amêndoas feita com frango, empada feita com farinha de amêndoas (frango ou camarão), encontradas em lojas de produtos naturais. Lembre-se: lanche é pontual, não substitui refeição, não é para beliscar o dia inteiro.</p>
+
+    <h2>Como preparar</h2>
+    <div class="split">
+      <div class="card" style="margin:0">
+        <h4 style="margin:0 0 10px">Para fritar ou refogar</h4>
+        <ul class="glist ok"><li>Manteiga ghee</li><li>Banha de porco</li><li>Óleo de coco</li></ul>
+      </div>
+      <div class="card" style="margin:0">
+        <h4 style="margin:0 0 10px">Evite aquecer</h4>
+        <ul class="glist no"><li>Óleo de soja</li><li>Óleo de girassol</li><li>Óleo de milho</li><li>Margarina</li></ul>
+      </div>
+    </div>
+    <p class="muted">Azeite de oliva extra virgem: use frio, para finalizar.</p>
+
+    <h2>Bebidas durante o desafio</h2>
+    <ul class="bullets">
+      <li>evitar bebidas alcoólicas</li>
+      <li>evitar refrigerantes, inclusive os “zero”</li>
+      <li>priorizar água, café e chás sem adoçar</li>
+    </ul>
+    <p>Essas bebidas impactam diretamente insulina, fome, sono e retenção de líquido.</p>
+
+    <h2>Hidratação — quanto de água consumir</h2>
+    <p>Recomendação: 40 a 50 ml de água por kg de peso corporal, por dia. Não é para beber tudo de uma vez. É para distribuir ao longo do dia.</p>
+    <div class="card">
+      <h4 style="margin:0 0 6px">Calculadora de água</h4>
+      <div class="calc">
+        <div>
+          <label for="peso">Seu peso (kg)</label>
+          <input type="number" id="peso" min="1" max="400" inputmode="numeric" placeholder="ex: 70">
+        </div>
+        <div class="calc-out" id="aguaOut">— <small>informe seu peso</small></div>
+      </div>
+      <table class="rtable water">
+        <tr><td>50 kg</td><td>2,0 a 2,5 litros por dia</td></tr>
+        <tr><td>60 kg</td><td>2,4 a 3,0 litros por dia</td></tr>
+        <tr><td>70 kg</td><td>2,8 a 3,5 litros por dia</td></tr>
+        <tr><td>80 kg</td><td>3,2 a 4,0 litros por dia</td></tr>
+        <tr><td>90 kg</td><td>3,6 a 4,5 litros por dia</td></tr>
+        <tr><td>100 kg</td><td>4,0 a 5,0 litros por dia</td></tr>
+      </table>
+    </div>
+    <p><strong>O que conta como hidratação:</strong> água, água com gás, água com limão (sem açúcar) e chás sem açúcar. Não conta: refrigerantes, sucos, bebidas adoçadas e bebidas alcoólicas.</p>
+    <p><strong>Sinais de pouca hidratação:</strong> boca seca, urina escura, constipação, dor de cabeça e cansaço. Muitas vezes, o corpo está pedindo água, não comida.</p>
+    <p><strong>Estratégias práticas:</strong> comece o dia bebendo água; não espere sentir sede; tenha sempre uma garrafa por perto; divida a ingestão ao longo do dia. Antes de beliscar, beba água.</p>
+
+    <h2>Como comer — quantidade e frequência</h2>
+    <p>Não conte calorias. Não pese comida. Coma até ficar satisfeito, não cheio. Se não sentir fome, não coma e respeite o jejum. Fome é sinal. Hábito não é. Organização é mais importante que variedade: quanto menos decisões você precisa tomar, maior a constância e melhor o resultado final.</p>
+
+    <div class="foot-nav"><button data-target="s3">← Semana 3</button><button data-target="depois">Depois dos 21 dias →</button></div>
+  </section>
+
+  <!-- ============ DEPOIS ============ -->
+  <section class="view" id="depois">
+    <p class="eyebrow">Depois dos 21 dias</p>
+    <h1 class="page">O começo de uma nova fase</h1>
+    <p class="lede">Chegar até aqui não foi por acaso. Você tomou uma decisão que muita gente adia por anos: cuidar de si. A Dieta Ancestral não foi apenas sobre perder peso. Foi sobre entender seu corpo, quebrar padrões, sair do automático e retomar o controle.</p>
+
+    <h2>O que você construiu nesses 21 dias</h2>
+    <ul class="built">
+      <li>reduziu inflamação</li>
+      <li>organizou sua alimentação</li>
+      <li>aprendeu a respeitar sua fome</li>
+      <li>melhorou sono, intestino e disposição</li>
+      <li>começou a enxergar comida como ferramenta de saúde</li>
+    </ul>
+    <p>Mesmo que o resultado na balança não seja exatamente o que você imaginou, o processo já começou.</p>
+
+    <h3>O erro de voltar para o ponto inicial</h3>
+    <p>O maior erro agora é pensar: “Acabou o desafio, posso voltar ao que era antes.” Leve com você os princípios, a consciência e os aprendizados. Eles são seus. Você já sentiu na pele a diferença. Voltar ao antigo padrão é escolher regredir.</p>
+
+    <div class="card">
+      <h4 style="margin:0 0 10px">3 próximos passos para manter os resultados</h4>
+      <ul class="flist">
+        <li>mantenha a base da alimentação</li>
+        <li>respeite o jejum quando fizer sentido</li>
+        <li>hidrate-se bem, durma melhor e evite voltar aos velhos excessos</li>
+      </ul>
+      <p class="muted" style="margin:12px 0 0">A constância vale mais que a perfeição.</p>
+    </div>
+
+    <h3>Quando procurar ajuda profissional</h3>
+    <p>Se você tem obesidade, sente que travou, luta contra compulsão ou quer avançar com mais segurança: buscar ajuda profissional não é fraqueza. É estratégia. Cada corpo tem sua história, sua inflamação e seu metabolismo.</p>
+
+    <h2>Um recado final para você</h2>
+    <p>Parabéns por essa decisão. Você não fez apenas um desafio. Você deu o primeiro passo de uma mudança real.</p>
+    <p>Depois desses 21 dias, você entende seu corpo, enxerga comida de outra forma, sabe o que te atrapalha e sabe o que te ajuda. Você não é mais o mesmo. E, se continuar nesse caminho, nunca mais será.</p>
+    <p>A mudança começou. Agora é com você mantê-la viva.</p>
+    <p class="signoff">Vamos viver mais e melhor?</p>
+
+    <div class="foot-nav"><button data-target="guia">← Guia de Apoio</button><button data-target="inicio">Voltar ao Início →</button></div>
+  </section>
+
+  <footer>Desafio Dieta Ancestral · Dr. Marlon Batista</footer>
+</main>
+
+<script>
+(function(){
+  var views = document.querySelectorAll('.view');
+  var tabs = document.querySelectorAll('.tab');
+  function show(id, save){
+    var found=false;
+    views.forEach(function(v){ var on=v.id===id; v.classList.toggle('active',on); if(on)found=true; });
+    if(!found){ id='inicio'; document.getElementById('inicio').classList.add('active'); }
+    tabs.forEach(function(t){ t.classList.toggle('active', t.dataset.target===id); });
+    window.scrollTo({top:0});
+    if(save!==false){ try{ localStorage.setItem('da_view', id); }catch(e){} }
+  }
+  document.addEventListener('click', function(e){
+    var el = e.target.closest('[data-target]');
+    if(el){ e.preventDefault(); show(el.dataset.target); }
+  });
+  try{ var last = localStorage.getItem('da_view'); if(last) show(last, false); }catch(e){}
+
+  var boxes = document.querySelectorAll('#checklist input[type=checkbox]');
+  var countEl = document.getElementById('checkCount');
+  function todayKey(){ var d=new Date(); return 'da_checks_'+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+  function saveChecks(){ var s=[]; boxes.forEach(function(b){ s.push(b.checked?1:0); }); try{ localStorage.setItem(todayKey(), s.join('')); }catch(e){} }
+  function loadChecks(){ var s=''; try{ s=localStorage.getItem(todayKey())||''; }catch(e){} boxes.forEach(function(b,i){ b.checked = s.charAt(i)==='1'; }); }
+  function updateCount(){ var n=0; boxes.forEach(function(b){ if(b.checked)n++; }); if(countEl) countEl.textContent = n+' de '+boxes.length; }
+  boxes.forEach(function(b){ b.addEventListener('change', function(){ saveChecks(); updateCount(); }); });
+  loadChecks(); updateCount();
+  var resetBtn=document.getElementById('resetChecks');
+  if(resetBtn) resetBtn.addEventListener('click', function(){ boxes.forEach(function(b){ b.checked=false; }); saveChecks(); updateCount(); });
+
+  var peso=document.getElementById('peso'), out=document.getElementById('aguaOut');
+  function fmt(v){ return (Math.round(v*10)/10).toString().replace('.',','); }
+  function calc(){
+    var w=parseFloat(peso.value);
+    if(!w || w<=0){ out.innerHTML='— <small>informe seu peso</small>'; return; }
+    var lo=w*40/1000, hi=w*50/1000;
+    out.innerHTML=fmt(lo)+' a '+fmt(hi)+' L <small>por dia, distribuídos</small>';
+  }
+  if(peso){ peso.addEventListener('input', calc);
+    try{ var pw=localStorage.getItem('da_peso'); if(pw){ peso.value=pw; calc(); } }catch(e){}
+    peso.addEventListener('change', function(){ try{ localStorage.setItem('da_peso', peso.value); }catch(e){} });
+  }
+})();
+</script>
+</body>
+</html>
