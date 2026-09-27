@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Desafio Dieta Ancestral</title>
+<title>Desafio Dieta Ancestral — Área do Aluno</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -121,6 +121,15 @@
   .aula{display:flex;gap:10px;align-items:baseline;font-size:.93rem;color:var(--ink-soft);
     background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:6px 0 10px}
   .aula b{color:var(--forest-deep);font-weight:600;white-space:nowrap}
+  .guia-link{display:flex;align-items:center;gap:12px;width:100%;text-align:left;cursor:pointer;
+    background:var(--leaf);border:1px solid var(--leaf-line);border-radius:14px;
+    padding:14px 18px;margin:4px 0 14px;font:inherit;color:var(--forest-deep)}
+  .guia-link:hover{background:var(--card)}
+  .guia-link .ico{font-size:1.25rem;line-height:1}
+  .guia-link .txt{flex:1}
+  .guia-link .txt b{display:block;font-weight:600;font-size:1rem}
+  .guia-link .txt small{color:var(--ink-soft);font-size:.85rem}
+  .guia-link .arw{color:var(--forest);font-weight:700;font-size:1.1rem}
 
   .chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
   .chip{font-size:.85rem;padding:5px 12px;border-radius:100px;background:var(--leaf);color:var(--forest-deep);border:1px solid var(--leaf-line)}
@@ -324,6 +333,7 @@
     <h1 class="page">A Retirada</h1>
     <p class="lede">Sair do padrão que engorda. Comece entendendo as regras e montando o prato do jeito certo, com proteína suficiente e gordura natural como fonte de energia.</p>
     <div class="aula"><b>Vídeo-aula (Eduzz):</b><span>Regras do desafio + alimentação base.</span></div>
+    <button class="guia-link" data-target="guia"><span class="ico">📖</span><span class="txt"><b>Guia de Apoio</b><small>Alimentos, refeições, preparo e hidratação — consulte quando precisar</small></span><span class="arw">→</span></button>
 
     <h3>O que avança esta semana</h3>
     <h4 style="margin-top:8px">Jejum noturno — comece com 12 horas</h4>
@@ -384,6 +394,7 @@
     <h1 class="page">A Reorganização</h1>
     <p class="lede">Intestino, sono e jejum. Com a alimentação já no lugar, entra o que potencializa tudo: o jejum como aliado, o intestino como órgão metabólico e o sono como parte do tratamento.</p>
     <div class="aula"><b>Vídeo-aula (Eduzz):</b><span>Jejum, intestino e sono.</span></div>
+    <button class="guia-link" data-target="guia"><span class="ico">📖</span><span class="txt"><b>Guia de Apoio</b><small>Alimentos, refeições, preparo e hidratação — consulte quando precisar</small></span><span class="arw">→</span></button>
 
     <h3>O que avança esta semana</h3>
     <h4 style="margin-top:8px">Jejum de 14 horas</h4>
@@ -434,6 +445,7 @@
     <h1 class="page">A Consolidação</h1>
     <p class="lede">Manter e reconhecer os sinais. A reta final é sobre constância: evitar os erros que sabotam o processo, reconhecer os sinais de que o corpo está mudando e preparar a vida depois do desafio.</p>
     <div class="aula"><b>Vídeo-aula (Eduzz):</b><span>Erros comuns, sinais de mudança e o depois.</span></div>
+    <button class="guia-link" data-target="guia"><span class="ico">📖</span><span class="txt"><b>Guia de Apoio</b><small>Alimentos, refeições, preparo e hidratação — consulte quando precisar</small></span><span class="arw">→</span></button>
 
     <h3>O que avança esta semana</h3>
     <h4 style="margin-top:8px">Jejum de 16 horas (quando o corpo já estiver adaptado)</h4>
